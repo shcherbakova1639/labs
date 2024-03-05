@@ -1,0 +1,23 @@
+List<string> list1 = new List<string>()
+{
+    "qw",
+    "er",
+    "ty"
+};
+List<string> list2 = new List<string>();
+
+for (int i = 0; i < list1.Count; i++)
+{
+    string element1 = list1[i];
+    string newelement = element1;
+
+    for (int j = i-1; j < list1.Count; j--)
+    {
+        if (j >= 0)
+        {
+            string element2 = list1[j];
+            newelement += " " + element2;
+        }
+    }
+    Console.WriteLine(newelement);
+}
