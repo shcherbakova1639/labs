@@ -1,0 +1,13 @@
+using System.Diagnostics.Tracing;
+
+Dictionary<string, int> dic = new Dictionary<string, int>();
+dic.Add("book", 13);
+dic.Add("pen", 12);
+dic.Add("card", 21);
+dic.Add("pencil", 2);
+
+List<string> list = new List<string>();
+list = dic.Keys.ToList();
+list.Sort();
+foreach (string key in list)
+Console.WriteLine(key);
