@@ -1,0 +1,151 @@
+using System;
+using System.Collections.Generic;
+using System.Linq;
+using System.Text;
+using System.Threading.Tasks;
+
+namespace lab4_2_.task2
+{
+
+  public class Income
+    {
+        public double MainWork { get; set; }
+        public double AdditionalWork { get; set; }          
+        public double Royalties { get; set; }               
+        public double PropertySale { get; set; }            
+        public double Gifts { get; set; }                   
+        public double ForeignRemittances { get; set; }      
+        public double ChildBenefits { get; set; }          
+        public double FinancialAid { get; set; }            
+
+        public Income(double mainWork, double additionalWork, double royalties, double propertySale,
+                      double gifts, double foreignRemittances, double childBenefits, double financialAid)
+        {
+            MainWork = mainWork;
+            AdditionalWork = additionalWork;
+            Royalties = royalties;
+            PropertySale = propertySale;
+            Gifts = gifts;
+            ForeignRemittances = foreignRemittances;
+            ChildBenefits = childBenefits;
+            FinancialAid = financialAid;
+        }
+    }
+
+ abstract class Taxes
+    {
+       
+        public abstract Dictionary<double, double> CalculateTax(Income income);
+
+    }
+ internal class mainTax: Taxes
+    {
+        public override Dictionary<double, double> CalculateTax(Income income)
+        {
+            double tax = income.MainWork * 0.2;
+            return new Dictionary<double, double> { { tax, income.MainWork } };
+        }
+    }
+    internal class addTax:Taxes
+    {
+        public override Dictionary<double, double> CalculateTax(Income income)
+        {
+            double tax = income.AdditionalWork * 0.15;
+            return new Dictionary<double, double> { { tax, income.AdditionalWork } };
+        }
+    }
+
+    internal class RoyaltiesTax : Taxes
+    {
+        public override Dictionary<double, double> CalculateTax(Income income)
+        {
+            double tax = income.Royalties * 0.25;
+            return new Dictionary<double, double> { { tax, income.Royalties } };
+        }
+    }
+
+    internal class PropertySaleTax : Taxes
+    {
+        public override Dictionary<double, double> CalculateTax(Income income)
+        {
+            double tax = income.PropertySale * 0.17;
+            return new Dictionary<double, double> { { tax, income.PropertySale } };
+        }
+    }
+
+    internal class GiftsTax : Taxes
+    {
+        public override Dictionary<double, double> CalculateTax(Income income)
+        {
+            double tax = income.Gifts * 0.2;
+            return new Dictionary<double, double> { { tax, income.Gifts } };
+        }
+    }
+
+    internal class ForeignRemittancesTax : Taxes
+    {
+        public override Dictionary<double, double> CalculateTax(Income income)
+        {
+            double tax = income.ForeignRemittances * 0.1;
+            return new Dictionary<double, double> { { tax, income.ForeignRemittances } };
+        }
+    }
+
+    internal class ChildBenefitsTax : Taxes
+    {
+        public override Dictionary<double, double> CalculateTax(Income income)
+        {
+            double tax = income.ChildBenefits * 0.05;
+            return new Dictionary<double, double> { { tax, income.ChildBenefits } };
+        }
+    }
+
+    internal class FinancialAidTax : Taxes
+    {
+        public override Dictionary<double, double> CalculateTax(Income income)
+        {
+            double tax = income.FinancialAid * 0.01;
+            return new Dictionary<double, double> { { tax, income.FinancialAid } };
+        }
+    }
+
+}
+
+internal class Program
+{
+    static void Main(string[] args)
+    {
+        Income income = new Income(50000, 10000, 15000, 200000, 1000, 13000, 2000, 500);
+
+        List<Taxes> taxCalculators = new List<Taxes>
+        {
+                new mainTax(),
+                new addTax(),
+                new RoyaltiesTax(),
+                new PropertySaleTax(),
+                new GiftsTax(),
+                new ForeignRemittancesTax(),
+                new ChildBenefitsTax(),
+                new FinancialAidTax(),
+        };
+
+
+        var totalTaxes = new List<KeyValuePair<double, double>>();
+        foreach (var calculator in taxCalculators)
+        {
+            var taxes = calculator.CalculateTax(income);
+            foreach (var pair in taxes)
+            {
+                totalTaxes.Add(new KeyValuePair<double, double>(pair.Key, pair.Value));
+            }
+        }
+
+        totalTaxes.Sort((x, y) => y.Key.CompareTo(x.Key));
+
+        Console.WriteLine("Податки, відсортовані за сумою :");
+        foreach (var pair in totalTaxes)
+        {
+            Console.WriteLine($"Податок: {pair.Key}, Сума доходу: {pair.Value}");
+        }
+    }
+}
