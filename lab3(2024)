@@ -1,0 +1,93 @@
+using System;
+using System.Text.Json;
+
+
+public class Date
+{
+    private int day;
+    private int month;
+    private int year;
+
+    public Date(int day, int month, int year)
+    {
+        this.day = day;
+        this.month = month;
+        this.year = year;
+    }
+
+    public int Day 
+    {
+        get 
+        { 
+            return day; 
+        }
+
+    }
+
+    public int Month 
+    {
+        get 
+        { 
+            return month; 
+        }
+    }
+
+    public int Year
+    {
+        get
+        {
+            return year;
+        }
+    }
+
+    public int Diference(Date otherDate)
+    {
+        DateTime dt1 = new DateTime(this.year, this.month, this.day);
+        DateTime dt2 = new DateTime(otherDate.Year, otherDate.Month, otherDate.Day);
+        TimeSpan ts = dt2 - dt1;
+        return Math.Abs(ts.Days);
+    }
+
+    public DateTime AddDays(int numberdays)
+    {
+      
+            DateTime dt = new DateTime(this.year, this.month, this.day + numberdays);
+            return dt;
+        
+    }
+
+    public DateTime AddMonth(int numbermonth)
+    {
+        DateTime mdt = new DateTime(this.year, this.month + numbermonth, this.day);
+        return mdt;
+    }
+
+    public int DayOfWeek()
+    {
+        DateTime dt = new DateTime(year, month, day);
+        return (int)dt.DayOfWeek;
+    }
+
+    
+}
+
+class Program
+{
+    static void Main(string[] args)
+    {
+        Date date1 = new Date(20, 07, 2005);
+        Date date2 = new Date(26, 03, 2024);
+        Console.WriteLine(date1.Diference(date2));
+        
+        Console.WriteLine(date1.AddDays(5));
+        Console.WriteLine(date1.AddMonth(3));
+
+        Console.WriteLine(date1.DayOfWeek());
+
+        string json = JsonSerializer.Serialize(date1);
+        Console.WriteLine(json);
+
+        Date? restoreddate = JsonSerializer.Deserialize<Date>(json);
+        Console.WriteLine(restoreddate.Day);
+    }
+}
